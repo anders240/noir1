@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+  <title>New Tab</title>
+</head>
+<body>
+  <button id="button">Launch</button>
+
+  <script>
+    document.getElementById('button').addEventListener('click', () => {
+      // 1. Fetch the code file first before opening any windows
+      fetch('code.html')
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.text();
+        })
+        .then(html => {
+          // 2. Create a Blob containing the HTML text with the correct MIME type
+          const blob = new Blob([html], { type: 'text/html' });
+          
+          // 3. Generate a temporary local blob URL pointing to this memory space
+          const blobUrl = URL.createObjectURL(blob);
+          
+          // 4. Open the newly generated blob URL in a new tab
+          const newTab = window.open(blobUrl, '_blank');
+          
+          if (!newTab) {
+            alert('Popup blocked! Please allow popups for this website.');
+          }
+        })
+        .catch(err => {
+          console.error('Failed to load code.html:', err);
+          alert('Failed to load code.html');
+        });
+    });
+
+    // Handle embedded iframe or nested contexts if applicable
+    if (window.self !== window.top) {
+      fetch('code.html')
+        .then(response => response.text())
+        .then(html => {
+          document.open();
+          document.write(html);
+          document.close();
+        })
+        .catch(err => {
+          document.body.innerHTML = '<h1>Failed to load code.html</h1>';
+          console.error(err);
+        });
+    }
+  </script>
+</body>
+</html>
