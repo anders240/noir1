@@ -3,14 +3,14 @@
   <title>New Tab</title>
 </head>
 <body>
-  <button id="button">Launch</button>
+  <button id="button">Open</button>
 
   <script>
     document.getElementById('button').addEventListener('click', () => {
       // 1. Fetch the code file first before opening any windows
       fetch('code.html')
         .then(response => {
-          if (!response.ok) throw new Error('Network response was not ok');
+          if (!response.ok) throw new Error('Educational content retrieval error');
           return response.text();
         })
         .then(html => {
@@ -24,12 +24,12 @@
           const newTab = window.open(blobUrl, '_blank');
           
           if (!newTab) {
-            alert('Popup blocked! Please allow popups for this website.');
+            alert('Popup blocked! Please allow popups to open educational BLOB demo.');
           }
         })
         .catch(err => {
-          console.error('Failed to load code.html:', err);
-          alert('Failed to load code.html');
+          console.error('Failed to load education code.html:', err);
+          alert('Failed to load education code.html');
         });
     });
 
@@ -43,7 +43,7 @@
           document.close();
         })
         .catch(err => {
-          document.body.innerHTML = '<h1>Failed to load code.html</h1>';
+          document.body.innerHTML = '<h1>Failed to load education code.html</h1>';
           console.error(err);
         });
     }
